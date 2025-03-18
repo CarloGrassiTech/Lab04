@@ -1,3 +1,4 @@
+import controller
 import dictionary as d
 import richWord as rw
 
@@ -100,16 +101,27 @@ class MultiDictionary:
 
 def dichotomicSearch(word, currentDic):
     start = 0
-    end = len(currentDic)
+    end = len(currentDic)-1
 
-    while (start != end):
-        mean = start + int((end - start)/2)
+    while (start <= end):
+        mean = start + (end - start)//2
         currentW = currentDic[mean]
         if word == currentW:
             return True
         elif word > currentW:  # in python < applied to strings gives True if the first string is before in lexicographic order
-            start = mean+1
+            start = mean + 1
         else:
-            end = mean
+            end = mean - 1
 
     return False
+
+
+class Mode:
+    def __init__(self, view):
+        self.view = view  # Salviamo la view nel Model
+
+    def handleButton(self, e):
+        """Gestisce il click del bottone"""
+        spell_checker = controller.SpellChecker(self.view)  # Passiamo 'view'
+        spell_checker.risolvi()  # Chiamiamo la funzione di correzione
+

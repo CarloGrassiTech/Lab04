@@ -7,7 +7,6 @@ class SpellChecker:
     def __init__(self, view):
         self._multiDic = md.MultiDictionary()
         self._view = view
-
     def handleSentence(self, txtIn, language, modality):
         txtIn = replaceChars(txtIn.lower())
 
@@ -44,6 +43,8 @@ class SpellChecker:
             case _:
                 return None
 
+    def risolvi(self):
+        return self.handleSentence(self._view.textIn.value, self._view.tendina.value, self._view.type.value)
 
     def printMenu(self):
         print("______________________________\n" +
