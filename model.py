@@ -28,7 +28,7 @@ class MultiDictionary:
         parole = []
 
         for word in words:
-            word = word.lower()
+            word = word.strip().lower()
             found = False
             richW = rw.RichWord(word)
             if language == "english":
@@ -112,16 +112,7 @@ def dichotomicSearch(word, currentDic):
             start = mean + 1
         else:
             end = mean - 1
-
     return False
 
 
-class Mode:
-    def __init__(self, view):
-        self.view = view  # Salviamo la view nel Model
-
-    def handleButton(self, e):
-        """Gestisce il click del bottone"""
-        spell_checker = controller.SpellChecker(self.view)  # Passiamo 'view'
-        spell_checker.risolvi()  # Chiamiamo la funzione di correzione
 

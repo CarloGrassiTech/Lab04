@@ -7,14 +7,14 @@ class SpellChecker:
     def __init__(self, view):
         self._multiDic = md.MultiDictionary()
         self._view = view
-    def handleSentence(self, txtIn, language, modality):
-        txtIn = replaceChars(txtIn.lower())
 
-        words = txtIn.split()
-        paroleErrate = " - "
+    def handleSentence(self, txtI, language, modality):
+        txt = replaceChars(txtI)
+        words = txt.split()
+        paroleErrate = ""
 
         match modality:
-            case "Default":
+            case "default":
                 t1 = time.time()
                 parole = self._multiDic.searchWord(words, language)
                 for parola in parole:
@@ -23,7 +23,7 @@ class SpellChecker:
                 t2 = time.time()
                 return paroleErrate, t2 - t1
 
-            case "Linear":
+            case "linear":
                 t1 = time.time()
                 parole = self._multiDic.searchWordLinear(words, language)
                 for parola in parole:
@@ -32,7 +32,7 @@ class SpellChecker:
                 t2 = time.time()
                 return paroleErrate, t2 - t1
 
-            case "Dichotomic":
+            case "dichotomic":
                 t1 = time.time()
                 parole = self._multiDic.searchWordDichotomic(words, language)
                 for parola in parole:
@@ -42,9 +42,23 @@ class SpellChecker:
                 return paroleErrate, t2 - t1
             case _:
                 return None
+    def handleButton(self, e):
+        temp = self.risolvi()
+        self._view._output_area.controls.append(ft.Text(f"Frase: {str(self._view.textIn())}"))
+        if temp[0] != "":
+            self._view._output_area.controls.append(ft.Text(f"Parole Errate: {temp[0]}"))
+        else:
+            self._view._output_area.controls.append(ft.Text(f"La frase è stata scritta correttamente"))
+        self._view._output_area.controls.append(ft.Text(f"Tempo Impiegato: {temp[1]} sec"))
+        self._view.__textIn = ""
+        self._view.update()
 
     def risolvi(self):
-        return self.handleSentence(self._view.textIn.value, self._view.tendina.value, self._view.type.value)
+        testo = self._view.textIn()
+        lingua = self._view.tendina()
+        modality = self._view.type()
+        temp = self.handleSentence(testo, lingua, modality)
+        return temp
 
     def printMenu(self):
         print("______________________________\n" +
@@ -61,5 +75,5 @@ class SpellChecker:
 def replaceChars(text):
     chars = "\\`*_{}[]()>#+-.!$?%^;,=_~"
     for c in chars:
-        text = text.replace(c, "")
+        text = str(text).replace(c, "")
     return text
